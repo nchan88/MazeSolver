@@ -24,6 +24,7 @@ public class Maze {
     /**
      * Create the 2D array of MazeCells from the
      * provided file and save it to this.mazeGrid
+     *
      * @param filename The file to create the maze from
      */
     private void createMaze(String filename) {
@@ -38,10 +39,10 @@ public class Maze {
 
             this.mazeGrid = new MazeCell[this.numRows][this.numCols];
 
-            for (int row=0; row<this.numRows; row++) {
+            for (int row = 0; row < this.numRows; row++) {
                 String line = myReader.nextLine();
 
-                for (int col=0; col<this.numCols; col++) {
+                for (int col = 0; col < this.numCols; col++) {
                     // Create a new MazeCell for each location
                     this.mazeGrid[row][col] = new MazeCell(row, col);
 
@@ -67,15 +68,15 @@ public class Maze {
      * Prints the maze and includes periods to indicate visited cells
      */
     public void printMaze() {
-        for (int row=0; row<this.numRows; row++) {
-            for (int col=0; col<this.numCols; col++) {
+        for (int row = 0; row < this.numRows; row++) {
+            for (int col = 0; col < this.numCols; col++) {
                 if (this.mazeGrid[row][col].isWall()) {
                     System.out.print("#");
                 } else if (this.startCell == this.mazeGrid[row][col]) {
                     System.out.print("A");
                 } else if (this.endCell == this.mazeGrid[row][col]) {
                     System.out.print("B");
-                } else if (this.mazeGrid[row][col].isExplored()){
+                } else if (this.mazeGrid[row][col].isExplored()) {
                     System.out.print(".");
                 } else {
                     System.out.print(" ");
@@ -88,18 +89,19 @@ public class Maze {
 
     /**
      * Prints the maze with the solution indicated by stars *
+     *
      * @param sol The arraylist of maze cells that make up the solution
      */
     public void printSolution(ArrayList<MazeCell> sol) {
-        for (int row=0; row<this.numRows; row++) {
-            for (int col=0; col<this.numCols; col++) {
+        for (int row = 0; row < this.numRows; row++) {
+            for (int col = 0; col < this.numCols; col++) {
                 if (this.mazeGrid[row][col].isWall()) {
                     System.out.print("#");
                 } else if (this.startCell == this.mazeGrid[row][col]) {
                     System.out.print("A");
                 } else if (this.endCell == this.mazeGrid[row][col]) {
                     System.out.print("B");
-                } else if(sol.contains(this.mazeGrid[row][col])) {
+                } else if (sol.contains(this.mazeGrid[row][col])) {
                     System.out.print("*");
                 } else {
                     System.out.print(" ");
@@ -113,8 +115,8 @@ public class Maze {
      * Reset the MazeCells to have no parent and be unvisited.
      */
     public void reset() {
-        for (int row=0; row<this.numRows; row++) {
-            for (int col=0; col<this.numCols; col++) {
+        for (int row = 0; row < this.numRows; row++) {
+            for (int col = 0; col < this.numCols; col++) {
                 MazeCell mc = this.mazeGrid[row][col];
                 mc.setParent(null);
 
@@ -126,7 +128,9 @@ public class Maze {
         }
     }
 
-    /** Getters **/
+    /**
+     * Getters
+     **/
     public MazeCell getStartCell() {
         return this.startCell;
     }
@@ -141,12 +145,19 @@ public class Maze {
 
     /**
      * Determines if the cell is valid to visit.
+     *
      * @param row the int row val
      * @param col the int col val
      * @return boolean true/false
      */
     public boolean isValidCell(int row, int col) {
         // TODO: Complete this function
-        return true;
+        //Checks if the cell's coordinates are in bounds.
+        //I check this first because I do not want to attempt to access mazeGrid at an undefined index.
+        if (row >= numRows || col >= numCols || row < 0 || col < 0) {
+            return false;
+        }
+        //If either condition is true, false is returned, otherwise it returns true.
+        return !(mazeGrid[row][col].isExplored() || mazeGrid[row][col].isWall());
     }
 }
